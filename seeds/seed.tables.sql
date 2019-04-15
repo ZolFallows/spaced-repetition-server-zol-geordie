@@ -17,18 +17,18 @@ VALUES
 
 INSERT INTO "language" ("id", "name", "user_id")
 VALUES
-  (1, 'Mongolian', 1);
+  (1, 'Italian', 1);
 
 INSERT INTO "word" ("id", "language_id", "original", "translation", "next")
 VALUES
-  (1, 1, 'практик', 'practice', 2),
-  (2, 1, 'Сайн уу', 'hello', 3),
-  (3, 1, 'байшин', 'house', 4),
-  (4, 1, 'хөгжүүлэгч', 'developer', 5),
-  (5, 1, 'орчуулах', 'translate', 6),
-  (6, 1, 'гайхалтай', 'amazing', 7),
-  (7, 1, 'нохой', 'dog', 8),
-  (8, 1, 'муур', 'cat', null);
+  (1, 1, 'pratica', 'practice', 2),
+  (2, 1, 'Ciao', 'hello', 3),
+  (3, 1, 'Casa', 'house', 4),
+  (4, 1, 'sviluppatore', 'developer', 5),
+  (5, 1, 'tradurre', 'translate', 6),
+  (6, 1, 'Stupefacente', 'amazing', 7),
+  (7, 1, 'cane', 'dog', 8),
+  (8, 1, 'gatto', 'cat', null);
 
 UPDATE "language" SET head = 1 WHERE id = 1;
 

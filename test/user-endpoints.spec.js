@@ -172,17 +172,17 @@ describe('User Endpoints', function () {
           name: 'test name',
         }
         const expectedList = {
-          name: 'Mongolian',
+          name: 'Italian',
           total_score: 0,
           words: [
-            { original: 'практик', translation: 'practice' },
-            { original: 'Сайн уу', translation: 'hello' },
-            { original: 'байшин', translation: 'house' },
-            { original: 'хөгжүүлэгч', translation: 'developer' },
-            { original: 'орчуулах', translation: 'translate' },
-            { original: 'гайхалтай', translation: 'amazing' },
-            { original: 'нохой', translation: 'dog' },
-            { original: 'муур', translation: 'cat' },
+            { original: 'pratica', translation: 'practice' },
+            { original: 'Ciao', translation: 'hello' },
+            { original: 'Casa', translation: 'house' },
+            { original: 'sviluppatore', translation: 'developer' },
+            { original: 'tradurre', translation: 'translate' },
+            { original: 'Stupefacente', translation: 'amazing' },
+            { original: 'cane', translation: 'dog' },
+            { original: 'gatto', translation: 'cat' },
           ]
         }
 

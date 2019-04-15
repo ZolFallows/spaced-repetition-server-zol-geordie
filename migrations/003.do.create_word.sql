@@ -1,6 +1,6 @@
-CREATE TABLE "word" (
+CREATE TABLE "word"(
   "id" SERIAL PRIMARY KEY,
-  "original" TEXT NOT NULL,
+  "original" VARCHAR(100) NOT NULL,
   "translation" TEXT NOT NULL,
   "memory_value" SMALLINT DEFAULT 1,
   "correct_count" SMALLINT DEFAULT 0,
