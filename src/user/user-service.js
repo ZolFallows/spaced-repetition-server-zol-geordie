@@ -41,12 +41,12 @@ const UserService = {
       username: user.username,
     }
   },
-  populateUserWords(db, user_id) {
+  populateUserWords(db, user_id) { 
     return db.transaction(async trx => {
       const [languageId] = await trx
         .into('language')
         .insert([
-          { name: 'French', user_id },
+          { name: 'Mongolian', user_id },
         ], ['id'])
 
       // when inserting words,
@@ -58,14 +58,14 @@ const UserService = {
         .first()
 
       const languageWords = [
-        ['entraine toi', 'practice', 2],
-        ['bonjour', 'hello', 3],
-        ['maison', 'house', 4],
-        ['développeur', 'developer', 5],
-        ['traduire', 'translate', 6],
-        ['incroyable', 'amazing', 7],
-        ['chien', 'dog', 8],
-        ['chat', 'cat', null],
+        ['практик', 'practice', 2],
+        ['Сайн уу', 'hello', 3],
+        ['байшин', 'house', 4],
+        ['хөгжүүлэгч', 'developer', 5],
+        ['орчуулах', 'translate', 6],
+        ['гайхалтай', 'amazing', 7],
+        ['нохой', 'dog', 8],
+        ['муур', 'cat', null],
       ]
 
       const [languageHeadId] = await trx

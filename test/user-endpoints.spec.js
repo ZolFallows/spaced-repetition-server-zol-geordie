@@ -172,19 +172,20 @@ describe('User Endpoints', function () {
           name: 'test name',
         }
         const expectedList = {
-          name: 'French',
+          name: 'Mongolian',
           total_score: 0,
           words: [
-            { original: 'entraine toi', translation: 'practice' },
-            { original: 'bonjour', translation: 'hello' },
-            { original: 'maison', translation: 'house' },
-            { original: 'développeur', translation: 'developer' },
-            { original: 'traduire', translation: 'translate' },
-            { original: 'incroyable', translation: 'amazing' },
-            { original: 'chien', translation: 'dog' },
-            { original: 'chat', translation: 'cat' },
+            { original: 'практик', translation: 'practice' },
+            { original: 'Сайн уу', translation: 'hello' },
+            { original: 'байшин', translation: 'house' },
+            { original: 'хөгжүүлэгч', translation: 'developer' },
+            { original: 'орчуулах', translation: 'translate' },
+            { original: 'гайхалтай', translation: 'amazing' },
+            { original: 'нохой', translation: 'dog' },
+            { original: 'муур', translation: 'cat' },
           ]
         }
+
         return supertest(app)
           .post('/api/user')
           .send(newUser)
