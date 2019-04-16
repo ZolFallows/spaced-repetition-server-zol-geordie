@@ -46,6 +46,8 @@ languageRouter
 languageRouter
   .get('/head', async (req, res, next) => {
     // implement me
+    // grab id 1 and return it json'd
+    // use linked list to keep requesting/searching through the table until we find the word
     res.send('implement me!')
   })
 
