@@ -1,6 +1,7 @@
 const express = require('express')
 const LanguageService = require('./language-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const LinkedList = require('../../Data-Structure/LinkedList')
 
 const languageRouter = express.Router()
 
@@ -48,7 +49,16 @@ languageRouter
     // implement me
     // grab id 1 and return it json'd
     // use linked list to keep requesting/searching through the table until we find the word
-    res.send('implement me!')
+
+    // example of expected response
+    // {
+    //   "nextWord": "Testnextword",
+    //   "wordCorrectCount": 222,
+    //   "wordIncorrectCount": 333,
+    //   "totalScore": 999
+    // }
+    
+
   })
 
 languageRouter
