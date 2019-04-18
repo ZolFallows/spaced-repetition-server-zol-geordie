@@ -95,7 +95,7 @@ languageRouter
         head.value.correct_count++
         head.value.memory_value = newMV
         // console.log('mv==================>', newMV)
-        await list.insertAt(newMV, list.remove(head.value))
+        await LanguageService.swapWord(list, newMV)
         // console.log(list.head)
 
         await LanguageService.updateDatabase(
@@ -122,7 +122,7 @@ languageRouter
         head.value.memory_value = 1
         list.head = list.head.next
       
-        await list.insertAt(1 ,list.remove(head.value))
+        await LanguageService.swapWord(list, head.value.memory_value)
         
         console.log(list.head)
         await LanguageService.updateDatabase(

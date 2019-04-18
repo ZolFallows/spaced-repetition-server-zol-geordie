@@ -53,6 +53,32 @@ const LanguageService = {
       .first()
   },
 
+  swapWord(list, nth){
+    if(list.head === null){
+      return;
+    }
+    let temp = list.head;
+    let currentWord = list.head;
+    let previousWord = null;
+    let index = 0;
+    while(index < nth && currentWord !== null) {
+      previousWord = currentWord;
+      currentWord = currentWord.next;
+      index++;
+    }
+    if(previousWord === null){
+      return;
+    }
+    list.head = list.head.next;
+    previousWord.next = temp;
+    previousWord.value.next = temp.value.id;
+    temp.next = currentWord;
+    temp.value.next = currentWord.value.id;
+    
+
+    return list;
+  },
+
   generateLanguageList: async (db, listHead) => {
     const wordsLL = new LinkedList() 
     let headWord = await LanguageService.getWord(db, listHead)
@@ -61,8 +87,9 @@ const LanguageService = {
     let currWord = headWord
     let currID = listHead
     while(currWord !== null){
+      console.log(currWord)
       wordsLL.insertLast(currWord);
-      if(currWord.next === null){
+      if(!currWord.next){
         currWord = null
       } else {
         currID = currWord.next
