@@ -72,29 +72,43 @@ const LanguageService = {
     return wordsLL
   },
 
+  getList(list){
+    const arr = []
+    let curr = list.head
+    while(curr !== null){
+      arr.push(curr)
+      curr = curr.next
+    }
+    return arr;
+  },
+
   updateDatabase(db, wordsLL, language){
     return  db.transaction(async trx => {
       // const language = new Promise()
-      const updatedLang = await trx('language')
-        .update(language)
-        .where({id: language.id})
-
       const words = [];
       let currWord = wordsLL.head
       while(currWord !== null){
-        let word = await trx('word')
-          .update(currWord.value)
-          .where({id: currWord.value.id})
-
-        words.push(word)
+        words.push(currWord.value)
         currWord = currWord.next
       } 
+        // console.log('list==================>', words)
 
-      return Promise.all([updatedLang, words])
+      return Promise.all([
+        trx('language')
+          .update(language)
+          .where('id', language.id)
+        , 
+        words.map(w => {
+          return trx('word')
+                    .update({...w})
+                    .where('id', w.id)
+
+        })])
     })
   }
 
 }
+
 
 module.exports = LanguageService
 

@@ -70,37 +70,42 @@ languageRouter
 
 languageRouter
   .post('/guess', bodyParser, async (req, res, next) => {
-    const guess = req.body.guess
+    const {guess} = req.body
 
     if(!guess){
       res.status(400).json({error: `Missing 'guess' in request body`})
     }
 
+
     try{
       const list = await LanguageService.generateLanguageList(
         req.app.get('db'),
-        req.language
+        req.language.head
       )
-      
+
+      // console.log(await LanguageService.getList(list))
+
       const head = list.head
+
       if(head.value.translation === guess){
         const newMV = head.value.memory_value*2
         const nextId = head.next.value.id 
-        head.value.correct_count+=1
-        req.language.total_score+=1
-        head.value.memory_value = newMV
         req.language.head = nextId
-
-        const tempValue = await list.remove(head.value)
-        await list.insertAt(tempValue, newMV)
+        req.language.total_score++
+        head.value.correct_count++
+        head.value.memory_value = newMV
+        // console.log('mv==================>', newMV)
+        await list.insertAt(newMV, list.remove(head.value))
+        // console.log(list.head)
 
         await LanguageService.updateDatabase(
           req.app.get('db'),
           list,
           req.language
           )
+        
 
-        res.status(200).json({
+        res.json({
           nextWord: list.head.value.original,
           totalScore: req.language.total_score,
           wordCorrectCount: list.head.value.correct_count,
@@ -109,24 +114,24 @@ languageRouter
           isCorrect: true
         })
 
-      } else if(head.value.translation !== guess){
+      } else {
         // const temp = head.value
         const nextId = head.next.value.id 
-        head.value.incorrect_count+=1
-        head.value.memory_value=1
         req.language.head = nextId
+        head.value.incorrect_count++
+        head.value.memory_value = 1
         list.head = list.head.next
-
-        const tempValue = await list.remove(head.value)
-        await list.insertAt(tempValue, 1)
-
+      
+        await list.insertAt(1 ,list.remove(head.value))
+        
+        console.log(list.head)
         await LanguageService.updateDatabase(
           req.app.get('db'),
           list,
           req.language
           )
 
-        res.status(200).json({
+        res.json({
           nextWord: list.head.value.original,
           totalScore: req.language.total_score,
           wordCorrectCount: list.head.value.correct_count,
@@ -135,17 +140,10 @@ languageRouter
           isCorrect: false
         })
       }
-
-
-      
+      next()
     } catch(error){
       next(error)
     }
-
-
-
-
-    res.send('implement me!')
   })
 
 module.exports = languageRouter

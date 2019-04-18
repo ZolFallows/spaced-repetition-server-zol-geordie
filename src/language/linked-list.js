@@ -47,6 +47,7 @@ class LinkedList {
           return; 
         }
         previousNode.next = currNode.next; 
+        previousNode.value.next = currNode.value.next
 
         return currNode.value;
     }
@@ -112,16 +113,42 @@ class LinkedList {
   
     }
   
-    insertAt(item, loc, list){
-      let current = list.head;
-      for (let i = 1; i < loc -1; i++) {
-        current = current.next;
-        if(current.next === null){
-          this.insertLast(item);
-        }
+    insertAt(nthPosition, itemToInsert) {
+      if (nthPosition < 0) {
+          throw new Error('Position error');
       }
-      current.next = new _Node(item, current.next);
+      if (nthPosition === 0) {
+          this.insertFirst(itemToInsert);
+      } else {
+          const node = this._findNthElement(nthPosition);
+          const nextNode = this._findNthElement(nthPosition+1)
+          const newNode = new _Node(itemToInsert, null);
+        
+          if(nextNode !== null){
+            newNode.value.next = nextNode.value.id; 
+            newNode.next = nextNode; 
+            node.next = newNode;
+            node.value.next = itemToInsert.id;
+          } else {
+            // newNode.value.next = next.next.value.id; 
+            newNode.next = nextNode; 
+            node.next = newNode;
+            node.value.next = itemToInsert.id;
+          }
+
+      }
+  }
+  _findNthElement(position) {
+    let node = this.head;
+    if(node === null){
+      return null;
     }
+    for (let i=0; i<position; i++) {
+        node = node.next;
+    }
+    return node;
+  }
+
 
 }
   
