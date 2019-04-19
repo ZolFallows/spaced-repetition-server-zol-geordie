@@ -89,7 +89,7 @@ languageRouter
       )
 
       const word = list.head
-      let isCorrect = word.value.translation === guess.toLowerCase()
+      let isCorrect = word.value.translation.toLowerCase() === guess.toLowerCase()
 
       if (isCorrect) {
         list.total_score++
