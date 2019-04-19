@@ -26,8 +26,9 @@ class LinkedList {
   findTail() {
     let tail = this.head
 
-    while (tail.next)
+    while (tail.next){
       tail = tail.next
+    }
 
     return tail
   }
@@ -40,17 +41,20 @@ class LinkedList {
 
     const tail = this.findTail()
 
-    if (!tail)
+    if (!tail){
       this.head = newTail
-    else
+    }else{
       tail.next = newTail
+    }
   }
 
+
   insert(value) {
-    if (!this.head)
+    if (!this.head){
       this.insertHead(value)
-    else
+    }else{
       this.insertTail(value)
+    }
   }
 
   getNodeAt(index) {
@@ -67,8 +71,9 @@ class LinkedList {
   insertAt(index, value) {
     let nodeBeforeIndex = this.getNodeAt(index - 1)
 
-    if (!nodeBeforeIndex)
+    if (!nodeBeforeIndex){
       return this.insertTail(value)
+    }
 
     let newNode = new _Node({
       value,
@@ -90,8 +95,9 @@ class LinkedList {
     let prev = this.head
     let current = prev.next
 
-    if (!current)
+    if (!current){
       return this.clear()
+    }
 
     while (current && current.next) {
       prev = current
@@ -104,8 +110,9 @@ class LinkedList {
   removeAt(index) {
     let nodeBeforeIndex = this.getNodeAt(index - 1)
 
-    if (!nodeBeforeIndex)
+    if (!nodeBeforeIndex){
       return this.removeTail()
+    }
 
     nodeBeforeIndex.next = nodeBeforeIndex.next.next
   }
