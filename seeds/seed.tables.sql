@@ -1,3 +1,5 @@
+-- psql -U ympvduylgwhsww -d dbcuctrd0h2fok -f seeds/seed.tables.sql
+
 BEGIN;
 
 TRUNCATE
