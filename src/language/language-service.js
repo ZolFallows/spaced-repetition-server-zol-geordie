@@ -1,4 +1,4 @@
-const LinkedList = require('./linked-list');
+const {LinkedList, _Node} = require('./linked-list');
 
 const LanguageService = {
   getUsersLanguage(db, user_id) {
@@ -45,112 +45,75 @@ const LanguageService = {
       .first();
   },
 
-  getWord(db, id){
-    return db
-      .from('word')
-      .select('*')
-      .where({id})
-      .first()
-  },
-
-  swapWord(list, nth){
-    if(list.head === null){
-      return;
-    }
-    let temp = list.head;
-    let currentWord = list.head;
-    let previousWord = null;
-    let index = 0;
-    while(index < nth && currentWord !== null) {
-      previousWord = currentWord;
-      currentWord = currentWord.next;
-      index++;
-    }
-    if(previousWord === null){
-      return;
-    }
-    list.head = list.head.next;
-    previousWord.next = temp;
-    previousWord.value.next = temp.value.id;
-    temp.next = currentWord;
-    temp.value.next = currentWord.value.id;
+  
+  populateList(language, words) {
+    const list = new LinkedList({
+      id: language.id,
+      name: language.name,
+      total_score: language.total_score,
+    })
+    let word = words.find(w => w.id === language.head)
+    list.insertHead(word)
     
-
-    return list;
-  },
-
-  generateLanguageList: async (db, listHead) => {
-    const wordsLL = new LinkedList() 
-    let headWord = await LanguageService.getWord(db, listHead)
-
-    //linked list head
-    let currWord = headWord
-    let currID = listHead
-    while(currWord !== null){
-      console.log(currWord)
-      wordsLL.insertLast(currWord);
-      if(!currWord.next){
-        currWord = null
-      } else {
-        currID = currWord.next
-        currWord = await LanguageService.getWord(db, currID)
+    for(let i=0; i<words.length; i++){
+      if(word.next){
+        word = words.find(w => w.id === word.next)
+        list.insert(word)
       }
     }
-    return wordsLL
+    return list
   },
 
-  getList(list){
-    const arr = []
-    let curr = list.head
-    while(curr !== null){
-      arr.push(curr)
-      curr = curr.next
-    }
-    return arr;
-  },
+  // updateLanguage(db, list){
+  //   return db('language')
+  //     .where('id', list.id)
+  //     .update({
+  //       total_score: list.total_score,
+  //       head: list.head.value.id,
+  //   })
+  // },
 
-  updateDatabase(db, wordsLL, language){
-    return  db.transaction(async trx => {
-      // const language = new Promise()
-      const words = [];
-      let currWord = wordsLL.head
-      while(currWord !== null){
-        words.push(currWord.value)
-        currWord = currWord.next
-      } 
-        // console.log('list==================>', words)
 
-      return Promise.all([
-        trx('language')
-          .update(language)
-          .where('id', language.id)
-        , 
-        words.map(w => {
-          return trx('word')
-                    .update({...w})
-                    .where('id', w.id)
+  // updateWords(db, list){
+  //   const 
+  //   return list.map(w => 
+  //     db('word')
+  //     .where('id', w.value.id)
+  //     .update({
+  //       memory_value: w.value.memory_value,
+  //       correct_count: w.value.correct_count,
+  //       incorrect_count: w.value.incorrect_count,
+  //       next: w.next ? w.next.value.id : null,
+  //     }))
+  // },
+  
+  persistUpdate(db, list) {
+    const promiseRes = []
 
-        })])
+    promiseRes.push(
+      db('language')
+      .where('id', list.id)
+      .update({
+        total_score: list.total_score,
+        head: list.head.value.id,
+    }))
+
+    list.map(w => {
+      promiseRes.push(
+         db('word')
+          .where('id', w.value.id)
+          .update({
+            memory_value: w.value.memory_value,
+            correct_count: w.value.correct_count,
+            incorrect_count: w.value.incorrect_count,
+            next: w.next ? w.next.value.id : null,
+          })
+      )
     })
+    return Promise.all(promiseRes)
   }
-
 }
 
 
 module.exports = LanguageService
 
-
-/*
-Write appropriate service object method(s) to get the following details:
-      The next word (original) the user needs to submit their answer for.
-      The correct count for that word.
-      The incorrect count for that word.
-      The total score for the user so far.
-
-{
-  "nextWord": "Testnextword",
-  "wordCorrectCount": 222,
-  "wordIncorrectCount": 333,
-  "totalScore": 999
-}
-*/
